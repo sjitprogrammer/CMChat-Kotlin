@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "526546585218",
+    "firebase_url": "https://cmchat-78dcf.firebaseio.com",
+    "project_id": "cmchat-78dcf",
+    "storage_bucket": "cmchat-78dcf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526546585218:android:03bf520c263f36f7a6969b",
+        "android_client_info": {
+          "package_name": "com.aodev.cmchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "526546585218-s0uasi0u8n9a147rgh2m1i1folce770c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aodev.cmchat",
+            "certificate_hash": "c3772eec032e1c53ccfb299d2058ecca42b0bc49"
+          }
+        },
+        {
+          "client_id": "526546585218-nggqdb4ff5g1ndievbq8sp6lgeoc68us.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCezXjz--PULFUAJyva2rwh3kpNE5wZvoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526546585218-nggqdb4ff5g1ndievbq8sp6lgeoc68us.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
