@@ -1,5 +1,6 @@
 package com.aodev.cmchat
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +19,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         back_to_register_button_login.setOnClickListener {
-            finish()
+            val intent = Intent(this,RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -31,8 +33,8 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
-//                        val user = auth.currentUser
-//                        updateUI(user)
+                    val intent = Intent(this,LatestMessagesActivity::class.java)
+                    startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -38,7 +37,6 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         already_have_an_account_register.setOnClickListener {
-            Toast.makeText(applicationContext, "go to Login activity", Toast.LENGTH_LONG).show()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
@@ -101,6 +99,9 @@ class RegisterActivity : AppCompatActivity() {
 
         db.setValue(user).addOnSuccessListener {
             Log.d(TAG, "insert user to FirebaseDatabase: is Successfully")
+            val intent = Intent(this,LatestMessagesActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }.addOnFailureListener {
             Log.e(TAG, "insert user to FirebaseDatabase: is fail : ${it.message.toString()}")
         }
