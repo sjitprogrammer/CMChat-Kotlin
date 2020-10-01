@@ -1,4 +1,4 @@
-package com.aodev.cmchat
+package com.aodev.cmchat.auth
 
 import android.app.Activity
 import android.content.Intent
@@ -11,7 +11,9 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.aodev.cmchat.R
 import com.aodev.cmchat.data.User
+import com.aodev.cmchat.messages.LatestMessagesActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -44,7 +46,9 @@ class RegisterActivity : AppCompatActivity() {
         selectphoto_button_register.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
-            startActivityForResult(intent, SELECT_PHOTO_CODE)
+            startActivityForResult(intent,
+                SELECT_PHOTO_CODE
+            )
         }
     }
 
@@ -99,7 +103,8 @@ class RegisterActivity : AppCompatActivity() {
 
         db.setValue(user).addOnSuccessListener {
             Log.d(TAG, "insert user to FirebaseDatabase: is Successfully")
-            val intent = Intent(this,LatestMessagesActivity::class.java)
+            val intent = Intent(this,
+                LatestMessagesActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }.addOnFailureListener {

@@ -1,4 +1,4 @@
-package com.aodev.cmchat
+package com.aodev.cmchat.messages
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.aodev.cmchat.auth.LoginActivity
+import com.aodev.cmchat.R
+import com.aodev.cmchat.auth.RegisterActivity
 import com.google.firebase.auth.FirebaseAuth
 private const val TAG = "LatestMessagesActivity"
 class LatestMessagesActivity : AppCompatActivity() {
@@ -19,7 +22,7 @@ class LatestMessagesActivity : AppCompatActivity() {
     private fun verifyUserIsLoggedIn() {
         val uuid = FirebaseAuth.getInstance().uid
         if(uuid.isNullOrEmpty()){
-            val intent = Intent(this,RegisterActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }
@@ -33,13 +36,13 @@ class LatestMessagesActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d(TAG,item.toString())
         when(item.itemId){
-            R.id.menu_new_message->{
-                val intent = Intent(this,NewMessageActivity::class.java)
+            R.id.menu_new_message ->{
+                val intent = Intent(this, NewMessageActivity::class.java)
                 startActivity(intent)
             }
-            R.id.menu_sign_out->{
+            R.id.menu_sign_out ->{
                 FirebaseAuth.getInstance().signOut()
-                val intent = Intent(this,LoginActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
