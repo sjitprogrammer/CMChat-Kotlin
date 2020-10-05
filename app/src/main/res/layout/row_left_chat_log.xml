@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/row_left_chat_log_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -15,11 +15,11 @@
         android:maxWidth="240dp"
         android:padding="16dp"
         android:text="This is message asasdasdasdasd"
-        app:layout_constraintStart_toEndOf="@+id/row_new_message_imageview"
-        app:layout_constraintTop_toTopOf="@+id/row_new_message_imageview" />
+        app:layout_constraintStart_toEndOf="@+id/row_left_message_imageview"
+        app:layout_constraintTop_toTopOf="@+id/row_left_message_imageview" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/row_new_message_imageview"
+        android:id="@+id/row_left_message_imageview"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
