@@ -31,7 +31,6 @@ class ChatLogActivity : AppCompatActivity() {
 
         user = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
         supportActionBar?.title = user.userName
-//        setUpDummyMessage()
 
         recyclerview_chat_logs.adapter = adapter
         listenForMessage()
@@ -41,7 +40,9 @@ class ChatLogActivity : AppCompatActivity() {
     }
 
     private fun listenForMessage() {
-        val reference = FirebaseDatabase.getInstance().getReference("/message")
+        val fromId = FirebaseAuth.getInstance().uid.toString()
+        val toId = user.uuid.toString()
+        val reference = FirebaseDatabase.getInstance().getReference("/user-message/$fromId/$toId")
         reference.addChildEventListener(object : ChildEventListener {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
@@ -60,10 +61,11 @@ class ChatLogActivity : AppCompatActivity() {
 
                 if (chatMessage != null) {
                     Log.d(TAG, chatMessage?.message)
-                    if(chatMessage.fromId == FirebaseAuth.getInstance().uid){
-                        adapter.add(ChatItemRight(chatMessage.message))
-                    }else{
-                        adapter.add(ChatItemLeft(chatMessage.message))
+                    if (chatMessage.fromId == FirebaseAuth.getInstance().uid) {
+                        val currentUser = LatestMessagesActivity.currentUser ?: return
+                        adapter.add(ChatItemRight(chatMessage.message, currentUser,applicationContext))
+                    } else {
+                        adapter.add(ChatItemLeft(chatMessage.message, user, applicationContext))
                     }
 
                 }
@@ -81,7 +83,9 @@ class ChatLogActivity : AppCompatActivity() {
         val fromId = FirebaseAuth.getInstance().uid.toString()
         val toId = user.uuid.toString()
         Log.d(TAG, "You send ${message}")
-        val reference = FirebaseDatabase.getInstance().getReference("/message").push()
+//        val reference = FirebaseDatabase.getInstance().getReference("/message").push()
+        val reference = FirebaseDatabase.getInstance().getReference("/user-message/$fromId/$toId").push()
+        val toReference = FirebaseDatabase.getInstance().getReference("/user-message/$toId/$fromId").push()
         val chatMessage = ChatMessage(
             reference.key.toString(),
             fromId,
@@ -91,22 +95,13 @@ class ChatLogActivity : AppCompatActivity() {
         )
         reference.setValue(chatMessage).addOnSuccessListener {
             Log.d(TAG, "sent message successful")
+            editTextText_chat_log.text.clear()
+            recyclerview_chat_logs.scrollToPosition(adapter.itemCount -1)
         }.addOnFailureListener {
             Log.d(TAG, "Error sent message failure!!!!!")
         }
+
+        toReference.setValue(chatMessage)
     }
 
-    private fun setUpDummyMessage() {
-        val adapter = GroupAdapter<GroupieViewHolder>()
-        adapter.add(ChatItemLeft("recieve message1"))
-        adapter.add(ChatItemLeft("recieve message2"))
-        adapter.add(ChatItemRight("send message1"))
-        adapter.add(ChatItemLeft("recieve message3"))
-        adapter.add(ChatItemRight("send message2"))
-        adapter.add(ChatItemLeft("recieve message4"))
-        adapter.add(ChatItemLeft("recieve message5"))
-        adapter.add(ChatItemRight("send message3"))
-
-        recyclerview_chat_logs.adapter = adapter
-    }
 }
