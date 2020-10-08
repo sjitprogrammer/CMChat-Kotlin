@@ -8,7 +8,7 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.row_left_chat_log.view.*
 
-data class ChatItemLeft(val message: String, val user: User, val context: Context) : Item<GroupieViewHolder>() {
+class ChatItemLeft(val message: String, val user: User, val context: Context) : Item<GroupieViewHolder>() {
     override fun getLayout() = R.layout.row_left_chat_log
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {

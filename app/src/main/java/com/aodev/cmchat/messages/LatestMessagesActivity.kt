@@ -8,17 +8,21 @@ import android.view.Menu
 import android.view.MenuItem
 import com.aodev.cmchat.auth.LoginActivity
 import com.aodev.cmchat.R
+import com.aodev.cmchat.adapter.LatestMessage
 import com.aodev.cmchat.auth.RegisterActivity
+import com.aodev.cmchat.data.ChatMessage
 import com.aodev.cmchat.data.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import kotlinx.android.synthetic.main.activity_latest_messages.*
 
 private const val TAG = "LatestMessagesActivity"
 
 class LatestMessagesActivity : AppCompatActivity() {
+    val adapter = GroupAdapter<GroupieViewHolder>()
+    val latestMessageMap = HashMap<String, ChatMessage>()
 
     companion object {
         var currentUser: User? = null
@@ -27,15 +31,59 @@ class LatestMessagesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_latest_messages)
-
+        recyclerview_latest_message.adapter = adapter
+        listenLatestMessage()
         fetchCurrentUser()
         verifyUserIsLoggedIn()
     }
 
+    private fun listenLatestMessage() {
+        val fromId = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().getReference("/latest-messages/$fromId")
+        ref.addChildEventListener(object : ChildEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatMessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                if (chatMessage != null) {
+                    latestMessageMap[snapshot.key!!] = chatMessage
+                    refreshRecyclerViewMessage()
+                }
+            }
+
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val chatMessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                if (chatMessage != null) {
+                    latestMessageMap[snapshot.key!!] = chatMessage
+                    refreshRecyclerViewMessage()
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
+    private fun refreshRecyclerViewMessage() {
+        adapter.clear()
+        latestMessageMap.values.onEach {
+            adapter.add(LatestMessage(it))
+        }
+    }
+
+
     private fun fetchCurrentUser() {
         val uid = FirebaseAuth.getInstance().uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
-        ref.addListenerForSingleValueEvent(object :ValueEventListener{
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
