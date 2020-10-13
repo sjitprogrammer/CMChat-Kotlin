@@ -85,7 +85,10 @@ class LatestMessagesActivity : AppCompatActivity() {
 
     private fun refreshRecyclerViewMessage() {
         adapter.clear()
-        latestMessageMap.values.onEach {
+        val sorted = latestMessageMap.toList().sortedByDescending { (key, value) -> value.timeStemp }
+            .toMap()
+        sorted.values.onEach {
+            Log.d(TAG,"hey "+it.message)
             adapter.add(LatestMessage(it,applicationContext))
         }
     }
