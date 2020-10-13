@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.aodev.cmchat.auth.LoginActivity
 import com.aodev.cmchat.R
 import com.aodev.cmchat.adapter.LatestMessage
+import com.aodev.cmchat.adapter.UserItem
 import com.aodev.cmchat.auth.RegisterActivity
 import com.aodev.cmchat.data.ChatMessage
 import com.aodev.cmchat.data.User
@@ -32,6 +34,15 @@ class LatestMessagesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_latest_messages)
         recyclerview_latest_message.adapter = adapter
+        recyclerview_latest_message.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
+        adapter.setOnItemClickListener { item, view ->
+            val row = item as LatestMessage
+
+            val intent = Intent(view.context,ChatLogActivity::class.java)
+            intent.putExtra(NewMessageActivity.USER_KEY,row.user)
+            startActivity(intent)
+            Log.e(TAG,"your clicked item")
+        }
         listenLatestMessage()
         fetchCurrentUser()
         verifyUserIsLoggedIn()
@@ -75,7 +86,7 @@ class LatestMessagesActivity : AppCompatActivity() {
     private fun refreshRecyclerViewMessage() {
         adapter.clear()
         latestMessageMap.values.onEach {
-            adapter.add(LatestMessage(it))
+            adapter.add(LatestMessage(it,applicationContext))
         }
     }
 

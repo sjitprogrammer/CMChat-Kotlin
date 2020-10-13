@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.aodev.cmchat.R
 import com.aodev.cmchat.adapter.UserItem
 import com.aodev.cmchat.data.User
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -38,7 +39,7 @@ class NewMessageActivity : AppCompatActivity() {
                 val adapter = GroupAdapter<GroupieViewHolder>()
                 snapshot.children.forEach {
                     val user = it.getValue(User::class.java)
-                    if (user != null) {
+                    if (user != null && user.uuid != FirebaseAuth.getInstance().uid) {
                         adapter.add(UserItem(user, applicationContext))
                     }
                 }

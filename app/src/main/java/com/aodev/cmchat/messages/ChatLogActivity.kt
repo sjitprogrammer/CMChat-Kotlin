@@ -69,6 +69,7 @@ class ChatLogActivity : AppCompatActivity() {
                     }
 
                 }
+                recyclerview_chat_logs.scrollToPosition(adapter.itemCount -1)
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
